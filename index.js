@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const port = process.env.PORT || 5000;
 
 
@@ -33,6 +34,27 @@ async function run() {
 
         });
 
+
+        // Get Api
+        app.get('/persons', async (req, res) => {
+            const cursor = personCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products);
+        });
+
+        // Update Api
+        app.put('/person', async (req, res) => {
+            const newPerson = req.body;
+            const { name, address, phone } = newPerson;
+            const updatedPerson = { name, address, phone };
+            const filter = { _id: ObjectId(newPerson._id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: updatedPerson
+            }
+            const result = await personCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
 
     }
 
