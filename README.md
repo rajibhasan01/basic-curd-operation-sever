@@ -23,8 +23,8 @@ Please follow the below instructions to run this project in your machine:
    ```sh
    git clone https://github.com/rajibhasan01/basic-curd-operation
    ```
-2. Install VS Code Live Server Plugin.
-3. Install VS Code Live SASS Compiler ```yarn add -D sass or npm install --save-dev sass```
+2. Install Nodemone, Express, dotenv, cors, mongoDB.
+3. ```npm i mongoDB nodemon express dotenv cors```
 4. Set mongoDB user name & password to the .env file
 
 <!-- CONTACT -->
