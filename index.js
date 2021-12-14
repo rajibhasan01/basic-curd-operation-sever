@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 
 
 app.use(cors());
+app.use(express.json());
 
 
 // database connection
@@ -14,12 +15,39 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-console.log(uri);
+
+async function run() {
+
+    try {
+        await client.connect();
+        const database = client.db('jobTask');
+        const personCollection = database.collection('person');
+
+
+        // Post Api
+        app.post('/person', async (req, res) => {
+            const newPerson = req.body;
+            const result = await personCollection.insertOne(newPerson);
+            res.send(result);
+            console.log(newPerson);
+
+        });
+
+
+    }
+
+    finally {
+        // await client.close();
+    }
+
+}
+run().catch(console.dir);
+
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+    res.send('simple crud operation');
+});
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-})
+    console.log(`listening at ${port}`);
+});
